@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+            border-radius: 5px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .data-row {
+            display: flex;
+            margin: 5px 0;
+        }
+        .label {
+            width: 150px;
+            font-weight: bold;
+        }
+        .value {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ station_code }} 天气报告</h1>
+            <p>生成时间: {{ current_time }}</p>
+        </div>
+
+        <div class="section">
+            <h2>METAR 报告</h2>
+            {% for row in metar_rows %}
+                {% if row.value != "N/A" %}
+                <div class="data-row">
+                    <div class="label">{{ row.label }}:</div>
+                    <div class="value">{{ row.value }}</div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="section">
+            <h2>TAF 预报</h2>
+            {% for period in taf_periods %}
+                <div class="section">
+                    <h3>预报时段: {{ period.period }}</h3>
+                    {% for row in period.rows %}
+                        {% if row.value != "N/A" %}
+                        <div class="data-row">
+                            <div class="label">{{ row.label }}:</div>
+                            <div class="value">{{ row.value }}</div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
